@@ -118,20 +118,35 @@ router.get("/blog", async function (req, res, next) {
 
 // 新增观看数接口
 router.post("/addWatchedNum", function (req, res, next) {
-  blogModel
-    .findByIdAndUpdate(req.body.id, { $set: { tag: 4 } })
-    .then((res) => {
-      console.log("res: ", res);
-    })
-    .catch((err) => {
-      console.log("err: ", err);
-    });
-
-  // findByIdAndUpdate
-
-  res.send({
+  let statusObj = {
     status: 200,
+    code: 1,
+  };
+
+  blogModel.findOne({ id: req.body.id }).then((res1) => {
+    res1.watchedNum++;
+    res1.save();
+    statusObj.code = 0;
+    res.send(statusObj);
+    next();
   });
+});
+
+// 新增点赞数
+router.post("/addLikeNum", function (req, res, next) {
+  let statusObj = {
+    status: 200,
+    code: 1,
+  };
+
+  blogModel.findOne({ id: req.body.id }).then((res1) => {
+    res1.likeNum++;
+    res1.save();
+    statusObj.code = 0;
+    res.send(statusObj);
+    next();
+  });
+  next();
 });
 
 // 修改博客
