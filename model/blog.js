@@ -63,6 +63,10 @@ const blogSchema = new Schema({
     type: String,
     default: "",
   },
+  commentArr: {
+    type: Array,
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("blog", blogSchema);

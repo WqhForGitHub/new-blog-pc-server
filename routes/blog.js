@@ -149,6 +149,29 @@ router.post("/addLikeNum", function (req, res, next) {
   next();
 });
 
+// 发表评论
+router.post("/publishComments", function (req, res, next) {
+  let statusObj = {
+    status: 200,
+    code: 1,
+  };
+
+  console.log(req.body);
+  blogModel.findOne({ id: req.body.id }).then((res1) => {
+    let obj = {
+      userId: req.body.userId,
+      content: req.body.value,
+      avatarURL: req.body.avatarURL, 
+      userName: req.body.userName
+    }
+    res1.commentArr.push(obj);
+    res1.save();
+    statusObj.code = 0;
+    res.send(statusObj);
+    next();
+  });
+});
+
 // 修改博客
 router.put("/blog", function (req, res, next) {});
 
