@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const blogModel = require("../model/blog");
 let mongoose = require("mongoose");
+const { off } = require("../model/user");
 
 // 添加博客
 router.post("/blog", function (req, res, next) {
@@ -161,10 +162,61 @@ router.post("/publishComments", function (req, res, next) {
     let obj = {
       userId: req.body.userId,
       content: req.body.value,
-      avatarURL: req.body.avatarURL, 
-      userName: req.body.userName
-    }
+      avatarURL: req.body.avatarURL,
+      userName: req.body.userName,
+      commentId: req.body.commentId,
+      commentArr: req.body.commentArr,
+    };
     res1.commentArr.push(obj);
+    res1.save();
+    statusObj.code = 0;
+    res.send(statusObj);
+    next();
+  });
+});
+
+// 发表子评论
+router.post("/publishSubComments", function (req, res, next) {
+  let statusObj = {
+    status: 200,
+    code: 1,
+  };
+
+  console.log(req.body);
+
+  // res1.commentArr commentId
+  // if(req.body.commentArr) {
+  //   for(let i = 0; i < req.body.commentArr.length; i++) {
+  //     let obj = {
+
+  //     }
+  //     if(req.body.commentArr[i].commentId === req.body.commentId) {
+  //       req.body.commentArr[i].commentArr
+  //     }
+  //   }
+  // }
+
+  blogModel.findOne({ id: req.body.id }).then((res1) => {
+    let obj = {
+      userId: req.body.dataObj.userId,
+      content: req.body.dataObj.value,
+      avatarURL: req.body.dataObj.avatarURL,
+      userName: req.body.dataObj.userName,
+      commentId: req.body.dataObj.commentId,
+    };
+    let targetObj = {}
+    if (res1.commentArr) {
+      for (let i = 0; i < res1.commentArr.length; i++) {
+        if (res1.commentArr[i].commentId === req.body.commentId) {
+          targetObj = res1.commentArr[i];
+        }
+      }
+    }
+
+   
+    targetObj.commentArr.push(obj)
+    console.log(res1.commentArr)
+
     res1.save();
     statusObj.code = 0;
     res.send(statusObj);
