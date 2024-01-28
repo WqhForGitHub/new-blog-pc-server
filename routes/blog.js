@@ -59,7 +59,7 @@ router.get("/blog", async function (req, res, next) {
 
   let skip = (Number.parseInt(pageNum) - 1) * Number.parseInt(pageSize);
   // 根据分类查
-  if (tagValue) {
+  if (tagValue && tagValue !== '4') {
     await blogModel
       .find({ tag: tagValue })
       .count()

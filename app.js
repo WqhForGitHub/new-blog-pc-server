@@ -12,7 +12,6 @@ const expressJwt = require("express-jwt");
 
 require("./db/init");
 
-
 var app = express();
 
 // view engine setup
@@ -29,7 +28,7 @@ app.use(
   expressJwt({
     secret: "test_token",
   }).unless({
-    path: ["/login", "/getPublicKey", "/addUser", '/tag'], //白名单,除了这里写的地址，其他的URL都需要验证
+    path: ["/getPublicKey", "/login" , "/addUser", "/tag"], //白名单,除了这里写的地址，其他的URL都需要验证
   })
 );
 

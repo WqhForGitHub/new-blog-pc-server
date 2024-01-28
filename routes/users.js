@@ -133,6 +133,19 @@ router.post("/login", async (req, res, next) => {
     .then((rs) => {
       count = rs;
     });
+  let [count111, count222] = [0, 0];
+  await blogModel
+    .find({
+      author: loginInfo.userName,
+    })
+    .then((res) => {
+      if (res && res.length > 0) {
+        for (let i = 0; i < res.length; i++) {
+          count111 += res[i].likeNum;
+          count222 += res[i].commentNum;
+        }
+      }
+    });
 
   await userModel
     .find({
@@ -156,6 +169,8 @@ router.post("/login", async (req, res, next) => {
         resObj.data = res1;
         resObj.token = token;
         resObj.count = count;
+        resObj.likeNum = count111;
+        resObj.commentNum = count222;
         res.send(resObj);
         next();
       } else {
