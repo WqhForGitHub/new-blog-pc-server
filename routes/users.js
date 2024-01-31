@@ -56,7 +56,7 @@ router.get("/getPublicKey", function (req, res, next) {
   const { publicKey } = genRSAKeyPaire();
 
   resObj.data = publicKey;
-  res.send(resObj);
+  return res.send(resObj);
 
   next();
 });
@@ -99,11 +99,11 @@ router.post("/addUser", function (req, res, next) {
   user.save().then((res1) => {
     if (res1 && res1.length == 0) {
       resObj.code = 1;
-      res.send(resObj);
+      return res.send(resObj);
       next();
     } else {
       resObj.code = 0;
-      res.send(resObj);
+      return res.send(resObj);
       next();
     }
   });
@@ -171,10 +171,10 @@ router.post("/login", async (req, res, next) => {
         resObj.count = count;
         resObj.likeNum = count111;
         resObj.commentNum = count222;
-        res.send(resObj);
+        return res.send(resObj);
         next();
       } else {
-        res.send(resObj);
+        return res.send(resObj);
         next();
       }
     });

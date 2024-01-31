@@ -39,7 +39,7 @@ router.post("/blog", function (req, res, next) {
   newBlog.save().then((res1) => {
     obj.msg = "添加成功！";
     obj.code = 0;
-    res.send(obj);
+    return res.send(obj);
     next();
   });
 
@@ -59,7 +59,7 @@ router.get("/blog", async function (req, res, next) {
 
   let skip = (Number.parseInt(pageNum) - 1) * Number.parseInt(pageSize);
   // 根据分类查
-  if (tagValue && tagValue !== '4') {
+  if (tagValue && tagValue !== "4") {
     await blogModel
       .find({ tag: tagValue })
       .count()
@@ -76,14 +76,12 @@ router.get("/blog", async function (req, res, next) {
         if (res1 && res1.length > 0) {
           resObj.code = 0;
           resObj.data = res1;
-
-          res.send(resObj);
+          return res.send(resObj);
           next();
         } else {
           resObj.code = 0;
           resObj.data = res1;
-
-          res.send(resObj);
+          return res.send(resObj);
         }
       });
   } else {
@@ -104,17 +102,16 @@ router.get("/blog", async function (req, res, next) {
         if (res1 && res1.length > 0) {
           resObj.code = 0;
           resObj.data = res1;
-
-          res.send(resObj);
+          return res.send(resObj);
           next();
         } else {
           resObj.code = 0;
           resObj.data = res1;
-
-          res.send(resObj);
+          return res.send(resObj);
         }
       });
   }
+
 });
 
 // 新增观看数接口
@@ -128,7 +125,7 @@ router.post("/addWatchedNum", function (req, res, next) {
     res1.watchedNum++;
     res1.save();
     statusObj.code = 0;
-    res.send(statusObj);
+    return res.send(statusObj);
     next();
   });
 });
@@ -144,7 +141,7 @@ router.post("/addLikeNum", function (req, res, next) {
     res1.likeNum++;
     res1.save();
     statusObj.code = 0;
-    res.send(statusObj);
+    return res.send(statusObj);
     next();
   });
   next();
@@ -170,7 +167,7 @@ router.post("/publishComments", function (req, res, next) {
     res1.commentArr.push(obj);
     res1.save();
     statusObj.code = 0;
-    res.send(statusObj);
+    return res.send(statusObj);
     next();
   });
 });
@@ -204,7 +201,7 @@ router.post("/publishSubComments", function (req, res, next) {
       userName: req.body.dataObj.userName,
       commentId: req.body.dataObj.commentId,
     };
-    let targetObj = {}
+    let targetObj = {};
     if (res1.commentArr) {
       for (let i = 0; i < res1.commentArr.length; i++) {
         if (res1.commentArr[i].commentId === req.body.commentId) {
@@ -213,13 +210,12 @@ router.post("/publishSubComments", function (req, res, next) {
       }
     }
 
-   
-    targetObj.commentArr.push(obj)
-    console.log(res1.commentArr)
+    targetObj.commentArr.push(obj);
+    console.log(res1.commentArr);
 
     res1.save();
     statusObj.code = 0;
-    res.send(statusObj);
+    return res.send(statusObj);
     next();
   });
 });

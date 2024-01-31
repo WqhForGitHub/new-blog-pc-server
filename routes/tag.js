@@ -34,7 +34,7 @@ router.get("/tag", async (req, res, next) => {
       resObj.code = 0;
       resObj.data = res1;
 
-      res.send(resObj);
+      return res.send(resObj);
       next();
     }
   });
